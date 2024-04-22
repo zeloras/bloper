@@ -123,6 +123,29 @@
         manifestUrl: 'https://zeloras.github.io/bloper/tonconnect-manifest.json',
         buttonRootId: 'wallet'
     });
+
+
+    tonConnectUI.onStatusChange(wallet => {
+        if (wallet && wallet.connectItems?.tonProof && 'proof' in wallet.connectItems.tonProof) {
+            Telegram.WebApp.showAlert(wallet.connectItems.tonProof.proof)
+        }
+    });
+
+    tonConnectUI.setConnectRequestParameters({ state: 'loading' });
+
+    const tonProofPayload = "TOKEN_JW_TONCONNECT";
+
+    if (!tonProofPayload) {
+        // remove loader, connect request will be without any additional parameters
+        tonConnectUI.setConnectRequestParameters(null);
+    } else {
+        // add tonProof to the connect request
+        tonConnectUI.setConnectRequestParameters({
+            state: "ready",
+            value: { tonProof: tonProofPayload }
+        });
+    }
+
 </script>
 
 </body>
